@@ -1,0 +1,13 @@
+package routes
+
+import (
+	"github.com/aruncs31s/esdcusermodule/handler"
+	"github.com/gin-gonic/gin"
+)
+
+func RegisterPublicUserRoutes(r *gin.Engine, userHandler handler.UserHandler) {
+	userGroup := r.Group("/users")
+	{
+		userGroup.GET("/search", userHandler.SearchUsers)
+	}
+}

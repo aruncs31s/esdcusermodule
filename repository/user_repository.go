@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/aruncs31s/esdcmodels"
+	model "github.com/aruncs31s/esdcmodels"
 	"gorm.io/gorm"
 )
 
@@ -18,6 +18,7 @@ type UserRepositoryReader interface {
 	FindByEmail(email string) (model.User, error)
 	GetAllUsers() (*[]model.User, error)
 	GetUsersCount() (int, error)
+	SearchUsers(query string) ([]model.User, error)
 }
 type UserRepositoryWriter interface {
 	CreateUser(user *model.User) error
@@ -81,6 +82,9 @@ func (r *userRepository) UpdateUser(user *model.User) error {
 func (r *userRepository) DeleteUserByID(userID uint) error {
 	return r.writer.DeleteUserByID(userID)
 }
+func (r *userRepository) SearchUsers(query string) ([]model.User, error) {
+	return r.reader.SearchUsers(query)
+}
 
 func (r *userRepositoryReader) FindByEmail(email string) (model.User, error) {
 	var user model.User
@@ -133,4 +137,15 @@ func (r *userRepositoryReader) GetUsersCount() (int, error) {
 func (r *userRepositoryWriter) DeleteUserByID(userID uint) error {
 	result := r.db.Delete(&model.User{}, userID)
 	return result.Error
+}
+
+func (r *userRepositoryReader) SearchUsers(query string) ([]model.User, error) {
+	var users []model.User
+
+	// Search by name or email with LIKE query
+	err := r.db.Where("name ILIKE ? OR email ILIKE ?",
+		"%"+query+"%", "%"+query+"%").
+		Limit(1000).
+		Find(&users).Error
+	return users, err
 }
