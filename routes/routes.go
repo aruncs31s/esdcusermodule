@@ -6,7 +6,7 @@ import (
 )
 
 func RegisterPublicUserRoutes(r *gin.Engine, userHandler handler.UserHandler) {
-	userGroup := r.Group("/users")
+	userGroup := r.Group("/api/users")
 	{
 		userGroup.GET("/search", userHandler.SearchUsers)
 	}

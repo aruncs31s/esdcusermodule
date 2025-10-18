@@ -142,8 +142,8 @@ func (r *userRepositoryWriter) DeleteUserByID(userID uint) error {
 func (r *userRepositoryReader) SearchUsers(query string) ([]model.User, error) {
 	var users []model.User
 
-	// Search by name or email with LIKE query
-	err := r.db.Where("name ILIKE ? OR email ILIKE ?",
+	// Search by name or email with case-insensitive LIKE query
+	err := r.db.Where("LOWER(name) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?)",
 		"%"+query+"%", "%"+query+"%").
 		Limit(1000).
 		Find(&users).Error
