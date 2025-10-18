@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"net/http"
-
 	"github.com/aruncs31s/esdcusermodule/service"
 	"github.com/aruncs31s/responsehelper"
 	"github.com/gin-gonic/gin"
@@ -39,5 +37,6 @@ func (h *userHandler) SearchUsers(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"users": users})
+	h.responseHelper.Success(c, map[string]interface{}{"users": users})
+
 }
