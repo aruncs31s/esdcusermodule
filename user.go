@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/aruncs31s/esdcusermodule/handler"
+
 	"github.com/aruncs31s/esdcusermodule/repository"
 	"github.com/aruncs31s/esdcusermodule/routes"
 	"github.com/aruncs31s/esdcusermodule/service"
