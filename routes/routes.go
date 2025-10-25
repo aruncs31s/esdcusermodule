@@ -11,3 +11,4 @@ func RegisterPublicUserRoutes(r *gin.Engine, userHandler handler.UserHandler) {
 		userGroup.GET("/search", userHandler.SearchUsers)
 	}
 }
+	
