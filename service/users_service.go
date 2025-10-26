@@ -25,7 +25,7 @@ func (s *userService) SearchUsers(query string) ([]dto.UserResponse, error) {
 		return nil, err
 	}
 	filteredUsers := make([]dto.UserResponse, 0)
-	for _, user := range users {
+	for _, user := range *users {
 		filteredUsers = append(filteredUsers, dto.UserResponse{
 			ID:    user.ID,
 			Name:  user.Name,
