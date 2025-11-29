@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"net/http"
 
 	"github.com/aruncs31s/esdcusermodule/domain"
@@ -163,9 +165,11 @@ func (h *oauthHandler) isProviderEnabled(provider domain.AuthProvider) bool {
 	return false
 }
 
-// generateState generates a random state parameter for CSRF protection
+// generateState generates a cryptographically secure random state parameter for CSRF protection
 func generateState() string {
-	// TODO: Implement secure random state generation
-	// This should use crypto/rand for production
-	return "random-state-placeholder"
+	b := make([]byte, 32)
+	if _, err := rand.Read(b); err != nil {
+		panic("failed to generate cryptographically secure random state: " + err.Error())
+	}
+	return base64.URLEncoding.EncodeToString(b)
 }

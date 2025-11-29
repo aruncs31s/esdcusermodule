@@ -19,7 +19,7 @@ func RegisterProtectedUserRoutes(r *gin.Engine, userHandler handler.UserHandler,
 	userGroup := r.Group("/api/users")
 	userGroup.Use(authMiddleware.RequireAuth())
 	{
-		userGroup.GET("/me", userHandler.SearchUsers) // TODO: Add GetCurrentUser handler
+		userGroup.GET("/me", userHandler.GetCurrentUser)
 	}
 }
 

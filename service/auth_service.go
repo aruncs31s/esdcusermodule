@@ -2,6 +2,9 @@
 package service
 
 import (
+	"net/url"
+	"strings"
+
 	"github.com/aruncs31s/esdcusermodule/config"
 	"github.com/aruncs31s/esdcusermodule/domain"
 	"github.com/aruncs31s/esdcusermodule/repository"
@@ -88,9 +91,27 @@ func NewOAuthService(userRepo repository.UserRepository, oauthCfg *config.OAuthC
 
 // GetAuthorizationURL returns the authorization URL for a provider
 func (s *OAuthServiceImpl) GetAuthorizationURL(provider domain.AuthProvider, state string) (string, error) {
-	// TODO: Implement full authorization URL generation with proper URL encoding
-	// This stub demonstrates the interface contract
-	return "", nil
+	providerCfg, ok := s.oauthCfg.GetProvider(provider)
+	if !ok {
+		return "", domain.ErrProviderNotSupported
+	}
+	if !providerCfg.Enabled {
+		return "", domain.ErrProviderNotEnabled
+	}
+
+	// Build authorization URL with properly encoded parameters
+	params := url.Values{}
+	params.Set("client_id", providerCfg.ClientID)
+	params.Set("redirect_uri", providerCfg.RedirectURL)
+	params.Set("response_type", "code")
+	params.Set("state", state)
+
+	// Add scopes if configured
+	if len(providerCfg.Scopes) > 0 {
+		params.Set("scope", strings.Join(providerCfg.Scopes, " "))
+	}
+
+	return providerCfg.AuthURL + "?" + params.Encode(), nil
 }
 
 // ExchangeCode exchanges an authorization code for tokens
