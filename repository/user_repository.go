@@ -17,6 +17,7 @@ type UserRepositoryReader interface {
 	FindUserIDByUsername(username string) (uint, error)
 	FindByEmail(email string) (*model.User, error)
 	GetAllUsers() (*[]model.User, error)
+	GetAllUsersEssentials() (*[]model.User, error)
 	GetUsersCount() (int, error)
 	SearchUsers(query string) (*[]model.User, error)
 }

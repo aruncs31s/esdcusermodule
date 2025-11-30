@@ -32,6 +32,5 @@ func (s *userService) SearchUsers(query string) ([]dto.UserResponse, error) {
 			Email: user.Email,
 		})
 	}
-
 	return filteredUsers, nil
 }
