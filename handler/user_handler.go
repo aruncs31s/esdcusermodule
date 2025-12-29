@@ -11,6 +11,7 @@ import (
 
 type UserHandler interface {
 	SearchUsers(c *gin.Context)
+	ListAllUsers(c *gin.Context)
 }
 
 func NewUserHandler(userService service.UserService) UserHandler {
