@@ -16,7 +16,7 @@ type UserRepositoryReader interface {
 	FindByID(id uint) (*model.User, error)
 	FindUserIDByUsername(username string) (uint, error)
 	FindByEmail(email string) (*model.User, error)
-	GetAllUsers() (*[]model.User, error)
+	GetAllUsers(limit int, offset int) (*[]model.User, error)
 	GetAllUsersEssentials() (*[]model.User, error)
 	GetUsersCount() (int, error)
 	SearchUsers(query string) (*[]model.User, error)
@@ -68,8 +68,8 @@ func (r *userRepository) FindUserIDByUsername(username string) (uint, error) {
 func (r *userRepository) FindByEmail(email string) (*model.User, error) {
 	return r.reader.FindByEmail(email)
 }
-func (r *userRepository) GetAllUsers() (*[]model.User, error) {
-	return r.reader.GetAllUsers()
+func (r *userRepository) GetAllUsers(limit int, offset int) (*[]model.User, error) {
+	return r.reader.GetAllUsers(limit, offset)
 }
 func (r *userRepository) GetUsersCount() (int, error) {
 	return r.reader.GetUsersCount()
@@ -124,9 +124,9 @@ func (r *userRepositoryWriter) UpdateUser(user *model.User) error {
 	result := r.db.Save(user)
 	return result.Error
 }
-func (r *userRepositoryReader) GetAllUsers() (*[]model.User, error) {
+func (r *userRepositoryReader) GetAllUsers(limit int, offset int) (*[]model.User, error) {
 	var users []model.User
-	result := r.db.Preload("Github").Find(&users)
+	result := r.db.Preload("Github").Limit(limit).Offset(offset).Find(&users)
 	return &users, result.Error
 }
 

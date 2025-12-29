@@ -5,7 +5,9 @@ import (
 	"github.com/aruncs31s/esdcusermodule/repository"
 	"github.com/aruncs31s/esdcusermodule/routes"
 	"github.com/aruncs31s/esdcusermodule/service"
+	"github.com/aruncs31s/esdcusermodule/utils/shared"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +21,8 @@ func GetUserRepo(db *gorm.DB) repository.UserRepository {
 	return repository.NewUserRepository(db)
 }
 
-func InitUserModule(db *gorm.DB) error {
+func InitUserModule(db *gorm.DB, logger *zap.Logger) error {
+	shared.Logger = logger
 	userRepo := GetUserRepo(db)
 	userService := service.NewUserService(userRepo)
 	userHandler := handler.NewUserHandler(userService)
