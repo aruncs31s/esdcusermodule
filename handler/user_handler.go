@@ -42,8 +42,8 @@ func (h *userHandler) SearchUsers(c *gin.Context) {
 	}
 
 	h.responseHelper.Success(c, map[string]interface{}{"users": users})
-
 }
+
 func (h *userHandler) ListAllUsers(c *gin.Context) {
 	rc := getEssential(c)
 	if rc == nil {
@@ -58,6 +58,7 @@ func (h *userHandler) ListAllUsers(c *gin.Context) {
 
 	h.responseHelper.Success(c, users)
 }
+
 func getEssential(c *gin.Context) *utils.HTTPRequestContext {
 	// Extract pagination parameters from query
 	limitParam := c.DefaultQuery("limit", "10")
